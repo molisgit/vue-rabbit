@@ -2,6 +2,7 @@
 import { onMounted,ref } from 'vue';
 import HomePanel from './HomePanel.vue';
 import {findNewAPI} from '@/apis/home'
+import { RouterLink } from 'vue-router'
 
 const newList = ref([])
 const getNewList = async ()=>{
