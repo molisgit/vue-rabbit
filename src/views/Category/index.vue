@@ -1,39 +1,14 @@
 <script setup>
-import { getTopCategoryAPI } from '@/apis/category'
-import { useRoute } from 'vue-router'
-import { ref,onMounted } from 'vue'
-import {getBannerAPI} from '@/apis/home'
 import GoodsItem from '../Home/components/GoodsItem.vue'
-import { onBeforeRouteUpdate } from 'vue-router'
+import {useBanner} from '@/views/Category/composables/useBanner'
+import {useCategory} from '@/views/Category/composables/useCategory'
 
 //获取数据
-const categoryData = ref({})
-const route = useRoute()
-const getTopCategory = async (id = route.params.id)=>{
-  const res = await getTopCategoryAPI(id)
-  categoryData.value = res.result
-}
-onMounted(() => getTopCategory())
-// onBeforeUpdate(() => getTopCategory())
-
-//目标：路由参数变化的时候，可以把分类数据接口重新发送
-onBeforeRouteUpdate((to) => {
-  //存在问题：使用最新的路由参数请求最新的分类数据
-  getTopCategory(to.params.id)
-})
+const {categoryData}  = useCategory()
 
 //获取banner
+const {bannerList} = useBanner()
 
-const bannerList = ref([])
-const getBanner = async ()=>{
-  const res = await getBannerAPI({
-    distributionSite:'2'
-  })
-  bannerList.value = res.result
-}
-
-//用onMounted把 getBanner 调起来
-onMounted(() => getBanner())
 </script>
 
 <template>
