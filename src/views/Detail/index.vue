@@ -125,9 +125,10 @@ onMounted(() => getGoods())
             <!-- 24热榜+专题推荐 -->
             <div class="goods-aside">
               <!-- 24小时热销榜 -->
-              <DetailHot/>
+               <!-- 加冒号的，说明后面的是一个变量或者表达式;没加冒号的，后面就是对应的字符串字面量 -->
+              <DetailHot :hot-type="1"/>
               <!-- 周热销榜 -->
-              <DetailHot/>
+              <DetailHot :hot-type="2"/>
             </div>
           </div>
         </div>
