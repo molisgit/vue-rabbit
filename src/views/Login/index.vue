@@ -1,9 +1,9 @@
 <script setup>
 import { ref } from 'vue';
-import { LoginAPI } from '@/apis/user'
 import "element-plus/theme-chalk/el-message.css";
 import { ElMessage } from 'element-plus';
 import { useRouter } from "vue-router";
+import { getUserStore } from '@/stores/user'
 
 //表单校验（账号名+密码）
 
@@ -41,6 +41,7 @@ const rules = {
 
 //3.获取form实例，做统一校验
 const formRef = ref(null)
+const useStore = getUserStore()
 const router = useRouter() /* router调方法，route获取参数 */
 const doLogin = () => {
   // const { account, password } = form.value
@@ -51,7 +52,7 @@ const doLogin = () => {
     //以valid作为判断条件，通过校验才执行登录逻辑
     if (valid) {
       //TODO LOGIN
-      const res = await LoginAPI({ 
+      await useStore.getUserInfo({ 
         account: form.value.account, 
         password: form.value.password
       })
