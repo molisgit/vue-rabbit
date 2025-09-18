@@ -12,10 +12,18 @@ export const getUserStore = defineStore('user', () => {
     const res = await LoginAPI({ account, password })
     userInfo.value = res.result
   }
+
+  // 退出登录时清空用户信息
+  const clearUserInfo = () => {
+    userInfo.value = {}
+    //localStorage会和pinia持久化插件保持一致
+  }
+
   // 3. 以对象的形式把 statu 和 action return
   return {
     userInfo,
-    getUserInfo
+    getUserInfo,
+    clearUserInfo
   }
 }, {
   persist: true
