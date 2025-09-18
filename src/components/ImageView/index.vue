@@ -3,14 +3,23 @@
 import { ref, watch } from 'vue';
 import { useMouseInElement } from '@vueuse/core';
 
+
+//
+defineProps({
+  imageList: {
+    type: Array,
+    default: () => []
+  }
+})
+
 // 图片列表
-const imageList = [
-  "https://yanxuan-item.nosdn.127.net/d917c92e663c5ed0bb577c7ded73e4ec.png",
-  "https://yanxuan-item.nosdn.127.net/e801b9572f0b0c02a52952b01adab967.jpg",
-  "https://yanxuan-item.nosdn.127.net/b52c447ad472d51adbdde1a83f550ac2.jpg",
-  "https://yanxuan-item.nosdn.127.net/f93243224dc37674dfca5874fe089c60.jpg",
-  "https://yanxuan-item.nosdn.127.net/f881cfe7de9a576aaeea6ee0d1d24823.jpg"
-]
+// const imageList = [
+//   "https://yanxuan-item.nosdn.127.net/d917c92e663c5ed0bb577c7ded73e4ec.png",
+//   "https://yanxuan-item.nosdn.127.net/e801b9572f0b0c02a52952b01adab967.jpg",
+//   "https://yanxuan-item.nosdn.127.net/b52c447ad472d51adbdde1a83f550ac2.jpg",
+//   "https://yanxuan-item.nosdn.127.net/f93243224dc37674dfca5874fe089c60.jpg",
+//   "https://yanxuan-item.nosdn.127.net/f881cfe7de9a576aaeea6ee0d1d24823.jpg"
+// ]
 
 //1.小图切换大图显示
 //下标
@@ -36,7 +45,7 @@ const positionY = ref(0)
 watch([elementX, elementY, isOutside],() => {
   //如果鼠标没有移入盒子里，直接不执行后面的逻辑
   if (isOutside.value)  return
-  console.log(2233);
+  // console.log(2233);
   
   //有效范围内，控制滑块的距离
   //横向

@@ -21,9 +21,9 @@ onMounted(() => getGoods())
   <div class="xtx-goods-page">
     <div class="container" v-if="goods.details">
       <div class="bread-container">
-        <el-breadcrumb separator=">">
+        <el-breadcrumb separator=">" v-if="goods.categories && goods.categories.length >= 2">
           <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-          <!-- 
+          <!--  
           渲染模板时，遇到对象的多层属性访问可能报错
           报错原因：goods一开始是空对象{}，{}.categories 是 undefined， undefined[1] 就会报错
           解决方法：1.可选链的语法 ?.  即goods.categories[1]?.id
@@ -42,7 +42,7 @@ onMounted(() => getGoods())
           <div class="goods-info">
             <div class="media">
               <!-- 图片预览区 -->
-              <ImageView/>
+              <ImageView :image-list="goods.mainPictures" />
               <!-- 统计数量 -->
               <ul class="goods-sales">
                 <li>
@@ -62,7 +62,7 @@ onMounted(() => getGoods())
                 </li>
                 <li>
                   <p>品牌信息</p>
-                  <p>{{ goods.brand.name }}</p>
+                  <p>{{ goods.brand?.name }}</p>
                   <p><i class="iconfont icon-dynamic-filling"></i>品牌主页</p>
                 </li>
               </ul>
