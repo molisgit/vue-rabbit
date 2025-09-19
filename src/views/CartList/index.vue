@@ -1,6 +1,12 @@
 <script setup>
 import { useCartStore } from '@/stores/cartStore'
 const cartStore = useCartStore()
+
+const singleCheck = (i,selected) => {
+  //通过store的方法来修改数据
+  cartStore.singleCheck(i.skuId,selected)
+  // console.log(i.selected,selected)
+}
 </script>
 
 <template>
@@ -24,7 +30,11 @@ const cartStore = useCartStore()
           <tbody>
             <tr v-for="i in cartStore.cartList" :key="i.id">
               <td>
-                <el-checkbox />
+                <!-- 单选框 -->
+                 <!-- 用 :model-value 从 store 读取数据（单向输入）（数据→视图） -->
+                 <!-- 用 @change 触发事件，在事件处理器中通过 store 的方法 修改数据（遵循 “store 的数据由 store 自身维护” 的原则）（视图→数据） -->
+                 <!-- 不用v-model的原因是：store 数据的维护权属于 store 自身，应通过 store 方法修改，而非组件直接用 v-model 绑定。 -->
+                <el-checkbox :model-value="i.selected" @change="(selected) => singleCheck(i,selected)"/>
               </td>
               <td>
                 <div class="goods">

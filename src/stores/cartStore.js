@@ -9,6 +9,7 @@ export const useCartStore = defineStore('cart', () => {
     // 添加购物车操作 已添加：count + 1 ，未添加： cartList.value.push 
     // 通过匹配传递过来的商品对象中的skuId,如果能在cartList中找到，就是添加过的商品
     const item = cartList.value.find(item => goods.skuId === item.skuId)
+    //find返回的是浅拷贝 修改对象的属性会改变原来对象
     //找到了
     if (item) {
       item.count += goods.count
@@ -23,6 +24,14 @@ export const useCartStore = defineStore('cart', () => {
     // 匹配cartList中的skuId,获得对应下标（索引）
     const index = cartList.value.findIndex(item => skuId === item.skuId)
     cartList.value.splice(index, 1)
+  }
+
+  //单选框绑定
+  const singleCheck = (skuId, selected) => {
+    //查找匹配的商品
+    const item = cartList.value.find(item => skuId === item.skuId)
+    //修改selected的值，与视图一致
+    item.selected = selected
   }
 
   // 3. 计算属性
@@ -46,6 +55,7 @@ export const useCartStore = defineStore('cart', () => {
     allPrice,
     addCart,
     delCart,
+    singleCheck
   }
 }, {
   persist: true,
