@@ -1,8 +1,9 @@
 <script setup>
 //使用Pinia中的数据
 import { useCategoryStore } from '@/stores/category';
-const categoryStone = useCategoryStore()
+import HeaderCart from './HeaderCart.vue';
 
+const categoryStore = useCategoryStore()
 </script>
 
 <template>
@@ -15,7 +16,7 @@ const categoryStone = useCategoryStore()
         <li class="home" >
           <RouterLink to="/">首页</RouterLink>
         </li>
-        <li class="home" v-for="item in categoryStone.categoryList" :key="item.id">
+        <li class="home" v-for="item in categoryStore.categoryList" :key="item.id">
           <RouterLink active-class="active" :to="`/category/${item.id}`">{{item.name}}</RouterLink>
         </li>
         
@@ -25,7 +26,7 @@ const categoryStone = useCategoryStore()
         <input type="text" placeholder="搜一搜">
       </div>
       <!-- 头部购物车 -->
-      
+      <HeaderCart />
     </div>
   </header>
 </template>
