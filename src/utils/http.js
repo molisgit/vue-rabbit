@@ -28,10 +28,10 @@ instance.interceptors.response.use(res => res.data, e => {
   //统一错误提示
   ElMessage({
     type: 'warning',
-    message: e.response.data.message
+    message: e.response?.data?.message
   })
   // token过期 401拦截处理
-  if (e.response.status === 401) {
+  if (e.response?.status === 401) {
     userStore.clearUserInfo()
     router.push({ path: '/login' })
   }
