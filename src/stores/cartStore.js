@@ -1,7 +1,7 @@
 import { computed, ref } from "vue"
 import { defineStore } from 'pinia'
-import { getUserStore } from "./user"
-import { insertCartAPI, getNewCartListAPI } from "@/apis/cart"
+import { getUserStore } from "./userStore"
+import { insertCartAPI, getNewCartListAPI, delCartAPI } from "@/apis/cart"
 
 export const useCartStore = defineStore('cart', () => {
   // 1.定义statu
@@ -11,13 +11,17 @@ export const useCartStore = defineStore('cart', () => {
   const userStore = getUserStore()
   const isLogin = computed(() => userStore.userInfo.token)
 
+  const updateNewList = async () => {
+    const res = await getNewCartListAPI()
+    cartList.value = res.result
+  }
+
   const addCart = async (goods) => {
     const { skuId, count } = goods
     if (isLogin.value) {
       //登录之后，调用接口 1.加入购物车 2.获取购物车列表
       await insertCartAPI({ skuId, count })
-      const res = await getNewCartListAPI()
-      cartList.value = res.result
+      updateNewList()
     } else {
       // 添加购物车操作 已添加：count + 1 ，未添加： cartList.value.push 
       // 通过匹配传递过来的商品对象中的skuId,如果能在cartList中找到，就是添加过的商品
@@ -34,10 +38,16 @@ export const useCartStore = defineStore('cart', () => {
   }
 
   // 2.2 定义删除购物车的action
-  const delCart = (skuId) => {
-    // 匹配cartList中的skuId,获得对应下标（索引）
-    const index = cartList.value.findIndex(item => skuId === item.skuId)
-    cartList.value.splice(index, 1)
+  const delCart = async (skuId) => {
+    if (isLogin) {
+      //调用删除接口
+      await delCartAPI([skuId])
+      updateNewList()
+    } else {
+      // 匹配cartList中的skuId,获得对应下标（索引）
+      const index = cartList.value.findIndex(item => skuId === item.skuId)
+      cartList.value.splice(index, 1)
+    }
   }
 
   //单选框绑定
