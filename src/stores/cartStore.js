@@ -50,7 +50,12 @@ export const useCartStore = defineStore('cart', () => {
     }
   }
 
-  //单选框绑定
+  // 2.3 退出登录时清空购物车
+  const clearCart = () => {
+    cartList.value = []
+  }
+
+  //单选框绑定（视图->数据）
   const singleCheck = (skuId, selected) => {
     //查找匹配的商品
     const item = cartList.value.find(item => skuId === item.skuId)
@@ -58,7 +63,7 @@ export const useCartStore = defineStore('cart', () => {
     item.selected = selected
   }
 
-  //全选框
+  //全选框（视图->数据）
   const allCheck = (selected) => {
     //把cartList中的每一项selected都设置为跟全选框相同的状态
     cartList.value.forEach(item => item.selected = selected)
@@ -99,7 +104,8 @@ export const useCartStore = defineStore('cart', () => {
     addCart,
     delCart,
     singleCheck,
-    allCheck
+    allCheck,
+    clearCart
   }
 }, {
   persist: true,

@@ -3,8 +3,10 @@
 import { defineStore } from 'pinia'
 import { LoginAPI } from '@/apis/user'
 import { ref } from 'vue'
+import { useCartStore } from './cartStore'
 
 export const getUserStore = defineStore('user', () => {
+  const cartStore = useCartStore()
   // 1. 定义管理用户数据的state
   const userInfo = ref({})
   // 2. 定义获取接口数据的action函数
@@ -13,10 +15,13 @@ export const getUserStore = defineStore('user', () => {
     userInfo.value = res.result
   }
 
-  // 退出登录时清空用户信息
+  // 退出登录时清空用户信息  以及购物车
   const clearUserInfo = () => {
     userInfo.value = {}
     //localStorage会和pinia持久化插件保持一致
+
+    //执行清除购物车的action
+    cartStore.clearCart()
   }
 
   // 3. 以对象的形式把 statu 和 action return
