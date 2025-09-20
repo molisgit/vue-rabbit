@@ -55,14 +55,23 @@ export const useCartStore = defineStore('cart', () => {
     }, 0)
   })
 
+  //every方法：检查数组中的所有元素是否都满足指定条件。返回值：true或false
+  //是否全选
   const isAll = computed(() => cartList.value.every(item => item.selected))
 
+  // 3.3 已勾选的商品数量
+  // filter先筛选selected为true的返回新数组，新数组再用reduce方法，返回一个累加值
+  const selectedCount = computed(() => cartList.value.filter(item => item.selected).reduce((prev, cur) => prev + cur.count, 0))
+  // 3.4 已勾选的商品价格合计
+  const selectedPrice = computed(() => cartList.value.filter(item => item.selected).reduce((prev, cur) => prev + cur.count * cur.price, 0))
 
   return {
     cartList,
     allCount,
     allPrice,
     isAll,
+    selectedCount,
+    selectedPrice,
     addCart,
     delCart,
     singleCheck,
