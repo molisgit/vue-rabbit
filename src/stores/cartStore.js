@@ -1,21 +1,35 @@
 import { computed, ref } from "vue"
 import { defineStore } from 'pinia'
+import { getUserStore } from "./user"
+import { insertCartAPI, getNewCartListAPI } from "@/apis/cart"
 
 export const useCartStore = defineStore('cart', () => {
   // 1.定义statu
   const cartList = ref([])
+
   // 2.1 定义action
-  const addCart = (goods) => {
-    // 添加购物车操作 已添加：count + 1 ，未添加： cartList.value.push 
-    // 通过匹配传递过来的商品对象中的skuId,如果能在cartList中找到，就是添加过的商品
-    const item = cartList.value.find(item => goods.skuId === item.skuId)
-    //find返回的是浅拷贝 修改对象的属性会改变原来对象
-    //找到了
-    if (item) {
-      item.count += goods.count
+  const userStore = getUserStore()
+  const isLogin = computed(() => userStore.userInfo.token)
+
+  const addCart = async (goods) => {
+    const { skuId, count } = goods
+    if (isLogin.value) {
+      //登录之后，调用接口 1.加入购物车 2.获取购物车列表
+      await insertCartAPI({ skuId, count })
+      const res = await getNewCartListAPI()
+      cartList.value = res.result
     } else {
-      //没找到
-      cartList.value.push(goods)
+      // 添加购物车操作 已添加：count + 1 ，未添加： cartList.value.push 
+      // 通过匹配传递过来的商品对象中的skuId,如果能在cartList中找到，就是添加过的商品
+      const item = cartList.value.find(item => goods.skuId === item.skuId)
+      //find返回的是浅拷贝 修改对象的属性会改变原来对象
+      //找到了
+      if (item) {
+        item.count += goods.count
+      } else {
+        //没找到
+        cartList.value.push(goods)
+      }
     }
   }
 
