@@ -1,5 +1,6 @@
 <script setup>
 import { getCheckInfoAPI } from '@/apis/checkout';
+import { ElMessage } from 'element-plus';
 import { onMounted, ref } from 'vue';
 
 const checkInfo = ref({})  // 订单对象
@@ -16,6 +17,23 @@ onMounted(() => getCheckInfo())
 
 //控制弹框打开
 const showDialog = ref(false)
+
+//切换地址active类交互
+const activeAddress = ref({})
+const switchAddress = (item) => {
+  activeAddress.value = item
+}
+
+//点击确定更换地址
+const confirm = () => {
+  if (!activeAddress.value.id) {
+    return ElMessage.warning('请选择地址')
+  }
+  curAddress.value = activeAddress.value
+  //关闭弹框
+  showDialog.value = false
+}
+
 </script>
 
 <template>
@@ -115,10 +133,10 @@ const showDialog = ref(false)
       </div>
     </div>
   </div>
-  <!-- 切换地址 -->
+  <!-- 切换地址的弹框 -->
   <el-dialog v-model="showDialog" title="切换收货地址" width="30%" center>
     <div class="addressWrapper">
-      <div class="text item" v-for="item in checkInfo.userAddresses"  :key="item.id">
+      <div class="text item" v-for="item in checkInfo.userAddresses" @click="switchAddress(item)" :class="{active: item.id === activeAddress.id}" :key="item.id">
         <ul>
         <li><span>收<i />货<i />人：</span>{{ item.receiver }} </li>
         <li><span>联系方式：</span>{{ item.contact }}</li>
@@ -128,8 +146,8 @@ const showDialog = ref(false)
     </div>
     <template #footer>
       <span class="dialog-footer">
-        <el-button>取消</el-button>
-        <el-button type="primary">确定</el-button>
+        <el-button @click="showDialog = false">取消</el-button>
+        <el-button type="primary" @click="confirm">确定</el-button>
       </span>
     </template>
   </el-dialog> 
