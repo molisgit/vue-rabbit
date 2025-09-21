@@ -17,7 +17,8 @@ onMounted(() => getOrder())
 //携带订单id以及回调地址，跳转到支付地址
 // 支付地址
 const baseURL = 'http://pcapi-xiaotuxian-front-devtest.itheima.net/'
-const backURL = 'http://127.0.0.1:5173/paycallback'
+//注意：项目默认适配 localhost，支付回调地址用 127.0.0.1会导致浏览器对 127.0.0.1 下的路由处理异常
+const backURL = 'http://localhost:5173/paycallback'
 const redirectUrl = encodeURIComponent(backURL)
 const payUrl = `${baseURL}pay/aliPay?orderId=${route.query.id}&redirect=${redirectUrl}`
 </script>
