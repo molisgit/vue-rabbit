@@ -84,8 +84,8 @@ export const useCartStore = defineStore('cart', () => {
     }, 0)
   })
 
+  //是否全选 （响应式，计算属性，根据单选框 是否全选 来决定全选框）
   //every方法：检查数组中的所有元素是否都满足指定条件。返回值：true或false
-  //是否全选
   const isAll = computed(() => cartList.value.every(item => item.selected))
 
   // 3.3 已勾选的商品数量
