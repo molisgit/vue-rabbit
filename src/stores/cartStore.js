@@ -7,15 +7,15 @@ export const useCartStore = defineStore('cart', () => {
   // 1.定义statu
   const cartList = ref([])
 
-  // 2.1 定义action
+  // 2. 定义action
   const userStore = getUserStore()
   const isLogin = computed(() => userStore.userInfo.token)
-
+  // 更新购物车列表
   const updateNewList = async () => {
     const res = await getNewCartListAPI()
     cartList.value = res.result
   }
-
+  // 2.1添加购物车
   const addCart = async (goods) => {
     const { skuId, count } = goods
     if (isLogin.value) {
@@ -39,7 +39,7 @@ export const useCartStore = defineStore('cart', () => {
 
   // 2.2 定义删除购物车的action
   const delCart = async (skuId) => {
-    if (isLogin) {
+    if (isLogin.value) {
       //调用删除接口
       await delCartAPI([skuId])
       updateNewList()

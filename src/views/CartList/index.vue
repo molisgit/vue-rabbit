@@ -1,7 +1,7 @@
 <script setup>
 import { useCartStore } from '@/stores/cartStore'
-const cartStore = useCartStore()
 
+const cartStore = useCartStore()
 const singleCheck = (i,selected) => {
   //通过store的方法来修改数据
   cartStore.singleCheck(i.skuId,selected)
@@ -10,6 +10,11 @@ const singleCheck = (i,selected) => {
 
 const allCheck = (selected) => {
   cartStore.allCheck(selected)
+}
+
+// 添加删除购物车商品的方法
+const delCart = (item) => {
+  cartStore.delCart(item.skuId)
 }
 </script>
 
@@ -55,7 +60,7 @@ const allCheck = (selected) => {
                 <p>&yen;{{ i.price }}</p>
               </td>
               <td class="tc">
-                <el-input-number v-model="i.count" />
+                <el-input-number :min="1" v-model="i.count" />
               </td>
               <td class="tc">
                 <p class="f16 red">&yen;{{ (i.price * i.count).toFixed(2) }}</p>
@@ -74,7 +79,7 @@ const allCheck = (selected) => {
               <td colspan="6">
                 <div class="cart-none">
                   <el-empty description="购物车列表为空">
-                    <el-button type="primary">随便逛逛</el-button>
+                    <el-button type="primary" @click="$router.push('/')">随便逛逛</el-button>
                   </el-empty>
                 </div>
               </td>
