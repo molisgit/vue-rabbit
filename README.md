@@ -1,3 +1,9 @@
+# 商品选择，请点进“新鲜好物”后三个商品图片
+
+# 支付宝沙盒账号
+-账号：`scobys4865@sandbox.com`
+-密码：`111111`
+
 # vue-rabbit
 
 This template should help get you started developing with Vue 3 in Vite.
